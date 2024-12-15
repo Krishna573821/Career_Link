@@ -12,7 +12,7 @@ import PostApplication from "./pages/Applications/PostApplication.jsx";
 import Register from "./pages/RegisterLogin/Register.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./store/slices/userSlice";
 
 const App = () => {
@@ -21,6 +21,7 @@ const App = () => {
   // useEffect(() => {
   //   dispatch(getUser());
   // }, []);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   useEffect(() => {
     if (isAuthenticated) {
