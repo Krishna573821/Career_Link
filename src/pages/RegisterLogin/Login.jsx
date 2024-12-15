@@ -43,11 +43,12 @@ const Login = () => {
     if (error) {
       toast.error(error);
       dispatch(clearAllUserErrors()); 
-    }    
-    if (isAuthenticated) {
+    }  
+    if (!loading && isAuthenticated) {  // Only navigate if not loading and authenticated
       navigateTo("/");
     }
-  }, [dispatch, error, isAuthenticated, navigateTo]);
+  }, [dispatch, error, isAuthenticated, loading, navigateTo]);
+  
   
 
   return (
