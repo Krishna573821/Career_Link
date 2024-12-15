@@ -39,19 +39,6 @@ const Login = () => {
     }
   }, [dispatch, error, loading, isAuthenticated]);
 
-  //CHATGPT
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error(error);
-  //     dispatch(clearAllUserErrors()); 
-  //   }  
-  //   if (!loading && isAuthenticated) {  // Only navigate if not loading and authenticated
-  //     navigateTo("/");
-  //   }
-  // }, [dispatch, error, isAuthenticated, loading, navigateTo]);
-  
-  
-
   return (
     <>
       <section className="authPage">

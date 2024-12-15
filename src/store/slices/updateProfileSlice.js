@@ -43,6 +43,7 @@ const updateProfileSlice = createSlice({
   },
 });
 
+
 export const updateProfile = (data) => async (dispatch) => {
   dispatch(updateProfileSlice.actions.updateProfileRequest());
   try {
