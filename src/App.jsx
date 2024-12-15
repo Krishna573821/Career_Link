@@ -18,17 +18,17 @@ import { getUser } from "./store/slices/userSlice";
 const App = () => {
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getUser());
-  // }, []);
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-
   useEffect(() => {
-    if (isAuthenticated) {
-      // If already authenticated, fetch user details
-      dispatch(getUser());
-    }
-  }, [dispatch, isAuthenticated]);
+    dispatch(getUser());
+  }, []);
+  // const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     // If already authenticated, fetch user details
+  //     dispatch(getUser());
+  //   }
+  // }, [dispatch, isAuthenticated]);
   
 
   return (
