@@ -29,15 +29,26 @@ const Login = () => {
     dispatch(login(formData));
   };
 
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error(error);
+  //     dispatch(clearAllUserErrors());
+  //   }
+  //   if (isAuthenticated) {
+  //     navigateTo("/");
+  //   }
+  // }, [dispatch, error, loading, isAuthenticated]);
+
   useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch(clearAllUserErrors());
-    }
+      dispatch(clearAllUserErrors()); 
+    }    
     if (isAuthenticated) {
       navigateTo("/");
     }
-  }, [dispatch, error, loading, isAuthenticated]);
+  }, [dispatch, error, isAuthenticated, navigateTo]);
+  
 
   return (
     <>

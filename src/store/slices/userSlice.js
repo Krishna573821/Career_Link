@@ -11,52 +11,42 @@ const userSlice = createSlice({
     message: null,
   },
   reducers: {
-    registerRequest(state, action) {
+    // Request Actions
+    registerRequest(state) {
       state.loading = true;
       state.isAuthenticated = false;
       state.user = {};
       state.error = null;
       state.message = null;
     },
+    loginRequest(state) {
+      state.loading = true;
+      state.isAuthenticated = false;
+      state.user = {};
+      state.error = null;
+      state.message = null;
+    },
+    fetchUserRequest(state) {
+      state.loading = true;
+      state.isAuthenticated = false;
+      state.user = {};
+      state.error = null;
+      state.message = null;
+    },
+
+    // Success Actions
     registerSuccess(state, action) {
       state.loading = false;
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      state.error = null;
       state.message = action.payload.message;
-    },
-    registerFailed(state, action) {
-      state.loading = false;
-      state.isAuthenticated = false;
-      state.user = {};
-      state.error = action.payload;
-      state.message = null;
-    },
-    loginRequest(state, action) {
-      state.loading = true;
-      state.isAuthenticated = false;
-      state.user = {};
       state.error = null;
-      state.message = null;
     },
     loginSuccess(state, action) {
       state.loading = false;
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      state.error = null;
       state.message = action.payload.message;
-    },
-    loginFailed(state, action) {
-      state.loading = false;
-      state.isAuthenticated = false;
-      state.user = {};
-      state.error = action.payload;
-      state.message = null;
-    },
-    fetchUserRequest(state, action) {
-      state.loading = true;
-      state.isAuthenticated = false;
-      state.user = {};
       state.error = null;
     },
     fetchUserSuccess(state, action) {
@@ -65,29 +55,58 @@ const userSlice = createSlice({
       state.user = action.payload;
       state.error = null;
     },
+
+    // Failed Actions
+    registerFailed(state, action) {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = {};
+      state.error = action.payload;
+      state.message = null;
+    },
+    loginFailed(state, action) {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = {};
+      state.error = action.payload;
+      state.message = null;
+    },
     fetchUserFailed(state, action) {
       state.loading = false;
       state.isAuthenticated = false;
       state.user = {};
       state.error = action.payload;
+      state.message = null;
     },
-    logoutSuccess(state, action) {
+
+    // Logout Actions
+    logoutSuccess(state) {
       state.isAuthenticated = false;
       state.user = {};
       state.error = null;
+      state.message = null;
     },
     logoutFailed(state, action) {
-      state.isAuthenticated = state.isAuthenticated;
-      state.user = state.user;
+      state.isAuthenticated = state.isAuthenticated; // Keeping the current state
+      state.user = state.user; // Keeping the current state
       state.error = action.payload;
+      state.message = null;
     },
-    clearAllErrors(state, action) {
+
+    // Clear All Errors and Messages
+    clearAllErrors(state) {
       state.error = null;
-      state.user = state.user;
+      state.message = null;
     },
   },
 });
 
+// Utility function for better error handling
+const handleError = (error) => {
+  return error?.response?.data?.message || "Something went wrong";
+};
+
+// Async Actions (Thunks)
 export const register = (data) => async (dispatch) => {
   dispatch(userSlice.actions.registerRequest());
   try {
@@ -102,7 +121,7 @@ export const register = (data) => async (dispatch) => {
     dispatch(userSlice.actions.registerSuccess(response.data));
     dispatch(userSlice.actions.clearAllErrors());
   } catch (error) {
-    dispatch(userSlice.actions.registerFailed(error.response.data.message));
+    dispatch(userSlice.actions.registerFailed(handleError(error)));
   }
 };
 
@@ -120,7 +139,7 @@ export const login = (data) => async (dispatch) => {
     dispatch(userSlice.actions.loginSuccess(response.data));
     dispatch(userSlice.actions.clearAllErrors());
   } catch (error) {
-    dispatch(userSlice.actions.loginFailed(error.response.data.message));
+    dispatch(userSlice.actions.loginFailed(handleError(error)));
   }
 };
 
@@ -136,12 +155,13 @@ export const getUser = () => async (dispatch) => {
     dispatch(userSlice.actions.fetchUserSuccess(response.data.user));
     dispatch(userSlice.actions.clearAllErrors());
   } catch (error) {
-    dispatch(userSlice.actions.fetchUserFailed(error.response.data.message));
+    dispatch(userSlice.actions.fetchUserFailed(handleError(error)));
   }
 };
+
 export const logout = () => async (dispatch) => {
   try {
-    const response = await axios.get(
+    await axios.get(
       "https://career-link-backend-uw9q.onrender.com/api/v1/user/logout",
       {
         withCredentials: true,
@@ -150,7 +170,7 @@ export const logout = () => async (dispatch) => {
     dispatch(userSlice.actions.logoutSuccess());
     dispatch(userSlice.actions.clearAllErrors());
   } catch (error) {
-    dispatch(userSlice.actions.logoutFailed(error.response.data.message));
+    dispatch(userSlice.actions.logoutFailed(handleError(error)));
   }
 };
 
