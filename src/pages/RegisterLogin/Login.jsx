@@ -29,25 +29,26 @@ const Login = () => {
     dispatch(login(formData));
   };
 
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error(error);
-  //     dispatch(clearAllUserErrors());
-  //   }
-  //   if (isAuthenticated) {
-  //     navigateTo("/");
-  //   }
-  // }, [dispatch, error, loading, isAuthenticated]);
-
   useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch(clearAllUserErrors()); 
-    }  
-    if (!loading && isAuthenticated) {  // Only navigate if not loading and authenticated
+      dispatch(clearAllUserErrors());
+    }
+    if (isAuthenticated) {
       navigateTo("/");
     }
-  }, [dispatch, error, isAuthenticated, loading, navigateTo]);
+  }, [dispatch, error, loading, isAuthenticated]);
+
+  //CHATGPT
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error(error);
+  //     dispatch(clearAllUserErrors()); 
+  //   }  
+  //   if (!loading && isAuthenticated) {  // Only navigate if not loading and authenticated
+  //     navigateTo("/");
+  //   }
+  // }, [dispatch, error, isAuthenticated, loading, navigateTo]);
   
   
 
